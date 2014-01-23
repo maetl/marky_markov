@@ -30,7 +30,7 @@ class PersistentDictionary < MarkovDictionary # :nodoc:
   # otherwise it creates an empty hash.
   def open_dictionary
     if File.exists?(@dictionarylocation)
-      file = File.new(@dictionarylocation, 'r').read
+      file = File.new(@dictionarylocation, encoding: 'UTF-8', mode: 'r').read
         @depth = file[0].to_i
         @dictionary = Ox.parse_obj(file[1..-1])
     else
@@ -42,7 +42,7 @@ class PersistentDictionary < MarkovDictionary # :nodoc:
   # to disk in JSON format.
   def save_dictionary!
     packed = Ox.dump(@dictionary)
-    File.open(@dictionarylocation, 'w') do |f|
+    File.open(@dictionarylocation, encoding: 'UTF-8', mode: 'w') do |f|
       f.write @depth.to_s + packed
     end
     true
